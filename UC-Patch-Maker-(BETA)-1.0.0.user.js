@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         UC Patch Maker (BETA)
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.1.0
 // @author       TheWiza2341
 // @description  Ever wanted to make custom Undercards fanpatches? Now you can! Featuring save/load functionality, keyword/card implementations, and more! check out the UCO thread for more information!
 // @match        https://undercards.net/*gameUpdates*
@@ -71,6 +71,16 @@ html, body {
 
 #uc-patch-overlay li {
     font-size: 14px;
+}
+
+#uc-patch-overlay .uc-li-text:focus {
+    outline: none;
+}
+
+#uc-patch-overlay li:focus-within {
+    outline: 2px solid white;
+    outline-offset: 3px;   /* pushes outline outward so class-color strip stays visible */
+    border-radius: 4px;
 }
 
 #uc-patch-overlay .uc-collapse-btn {
@@ -225,6 +235,57 @@ function sanitizeText(str){
 }
 
 // ================================================================
+// INPUT SHIELD — Blocks UC & Underscript hotkeys while editing
+// ================================================================
+
+function ucInputBlocker(e) {
+    const ae = document.activeElement;
+    const editing =
+        ae &&
+        (
+            ae.classList.contains("uc-li-text") ||
+            (ae.tagName === "H2" && ae.getAttribute("contenteditable") === "true")
+        );
+
+    if (!editing) return;
+
+    // Block only harmful global keys
+    if (["Escape", "Enter", "+", "="].includes(e.key)) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+
+        // Custom behavior: Enter ALWAYS blurs the active editor
+        if (e.key === "Enter") {
+            ae.blur();
+        }
+    }
+}
+
+function enableUCInputBlocker() {
+    // Block BEFORE site scripts
+    window.addEventListener("keydown", ucInputBlocker, true);
+    window.addEventListener("keyup", ucInputBlocker, true);
+
+    document.addEventListener("keydown", ucInputBlocker, true);
+    document.addEventListener("keyup", ucInputBlocker, true);
+
+    // UC uses body-level handlers as well
+    document.body.addEventListener("keydown", ucInputBlocker, true);
+    document.body.addEventListener("keyup", ucInputBlocker, true);
+}
+
+function disableUCInputBlocker() {
+    window.removeEventListener("keydown", ucInputBlocker, true);
+    window.removeEventListener("keyup", ucInputBlocker, true);
+
+    document.removeEventListener("keydown", ucInputBlocker, true);
+    document.removeEventListener("keyup", ucInputBlocker, true);
+
+    document.body.removeEventListener("keydown", ucInputBlocker, true);
+    document.body.removeEventListener("keyup", ucInputBlocker, true);
+}
+
+// ================================================================
 //   makeEditable() — FIXED & RESTORED (with save hook)
 
 function makeEditable(el, placeholder){
@@ -233,6 +294,7 @@ function makeEditable(el, placeholder){
 
     el.addEventListener('focus',()=>{
         el.dataset.prevText = el.textContent.trim();
+        enableUCInputBlocker(); // Enabled Input Shield
     });
 
     el.addEventListener('blur',()=>{
@@ -240,8 +302,8 @@ function makeEditable(el, placeholder){
         if(!t) t=placeholder;
         el.textContent=t;
 
-        // Save whenever the editable element (e.g., title H2) is finalized.
         saveState();
+        disableUCInputBlocker(); // Disable Input Shield
     });
 
     el.addEventListener('keydown',e=>{
@@ -566,7 +628,7 @@ function init(main){
     container.querySelectorAll('ul > li').forEach(li=>{
         ensureLiTextSpan(li);
         setupLiTextEditing(li);
-        setupColorCycling(li);
+        //setupColorCycling(li);
         setupReordering(li);
     });
 
@@ -728,7 +790,8 @@ function cycleCategory(li,dir){
     li.classList.add(cycleOrder[newIdx]);
 }
 
-function setupColorCycling(li){
+
+    /*function setupColorCycling(li){
     li.addEventListener('click',e=>{
         const overlay=document.getElementById('uc-patch-overlay');
         if(overlay && overlay.classList.contains('viewer-mode')) return;
@@ -741,7 +804,8 @@ function setupColorCycling(li){
 
         cycleCategory(li,1);
     });
-}
+}*/
+//Personally I just find click cycle annoying, just use the keyboard inputs ngl.
 
 // Part 2 of my Torment
 
@@ -798,6 +862,7 @@ function setupLiTextEditing(li){
 
     span.addEventListener('focus',()=>{
         span.dataset.prevText = span.textContent.trim();
+        enableUCInputBlocker(); // Input Shield
     });
 
     span.addEventListener('blur',()=>{
@@ -806,8 +871,8 @@ function setupLiTextEditing(li){
         span.textContent=t;
         li.dataset.raw=t;
 
-        // Save whenever LI editing finishes
         saveState();
+        disableUCInputBlocker(); // You get the gist
     });
 
     span.addEventListener('keydown',e=>{
@@ -875,7 +940,7 @@ function createNewLI(){
     li.appendChild(delBtn);
 
     setupLiTextEditing(li);
-    setupColorCycling(li);
+    //setupColorCycling(li);
     setupReordering(li);
 
     addBtn.onclick=e=>{
