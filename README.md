@@ -37,4 +37,4 @@ Add/Delete Entries: Users can increase or decrease the number of entries in a ba
 Reorder Entry Position: Users can change the orientation of each entry, in their respective balance section
 
 
-There is more I can explain but I'm tired as hell check the discord or something there's a chance this is already covered somewhere.
+There is more I can explain but I'm tired as hell check the UCO discord or something there's a chance this is already covered somewhere.
