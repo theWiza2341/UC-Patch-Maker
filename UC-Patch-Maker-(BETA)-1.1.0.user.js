@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         UC Patch Maker (BETA)
+// @name         UC Patch Maker
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
+// @version      1.2.1
 // @author       TheWiza2341
-// @description  Ever wanted to make custom Undercards fanpatches? Now you can! Featuring save/load functionality, keyword/card implementations, and more! check out the UCO thread for more information!
+// @description  Ever wanted to make custom Undercards fanpatches with ease? Now you can! Featuring save/load functionality, keyword/card implementations, and more!
 // @match        https://undercards.net/*gameUpdates*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=undercards.net
+// @icon         https://i.imgur.com/qKHDfnB.png
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
@@ -250,7 +250,7 @@ function ucInputBlocker(e) {
     if (!editing) return;
 
     // Block only harmful global keys
-    if (["Escape", "Enter", "+", "="].includes(e.key)) {
+    if (["Escape", "Enter"].includes(e.key)) {
         e.stopImmediatePropagation();
         e.preventDefault();
 
@@ -687,6 +687,27 @@ function init(main){
     resetBtn.style.display="none";
     document.body.appendChild(resetBtn);
 
+    // Help button (for new users)
+    const helpBtn = document.createElement('button');
+    helpBtn.textContent = "Help";
+    Object.assign(helpBtn.style, {
+        position: "fixed",
+        left: "130px", // pushes it beside Reset Data
+        bottom: "90px",
+        padding: "8px 12px",
+        background: "#3366cc",
+        color: "white",
+        border: "none",
+        borderRadius: "6px",
+        cursor: "pointer",
+        zIndex: "99999",
+        fontSize: "14px"
+    });
+
+    helpBtn.style.display = "none";
+    document.body.appendChild(helpBtn);
+    document.body.appendChild(toggle);
+
     let custom=false;
     let isViewerMode=false;
 
@@ -698,12 +719,14 @@ function init(main){
             toggle.textContent="Show Original Patch Notes";
             modeToggle.style.display="inline-block";
             resetBtn.style.display="inline-block";
+            helpBtn.style.display="inline-block";
         } else {
             overlay.style.display="none";
             between.forEach(n=>n.style.display="");
             toggle.textContent="Show Custom Patch Notes";
             modeToggle.style.display="none";
             resetBtn.style.display="none";
+            helpBtn.style.display="none";
 
             if(isViewerMode){
                 isViewerMode=false;
@@ -756,6 +779,81 @@ function init(main){
         location.reload();
     }
 };
+
+    helpBtn.onclick = () => {
+    BootstrapDialog.alert({
+        title: "Custom Patch Maker – Help",
+        message:
+`<u><b>Basic Editing</b></u>
+Click any balance change to begin editing
+• Enter  = Confirm change
+• Escape = Cancel change
+
+
+<u><b>Adding & Removing Entries</b></u>
+• Green/Red +/- Button – Add a new entry / Remove entry
+
+
+<u><b>Toggle Balance Sections</b></u>
+• Blue +/- Button – Toggle visibility of a balance section
+<span style="color:#ff5555;">NOTE:</span> Hidden sections will not appear in Viewer Mode
+
+
+<u><b>Entry Class Type</b></u>
+Each entry needs a category:
+• Buff (GREEN)
+• Rework (GOLD)
+• Nerf (RED)
+• Other (GRAY)
+
+
+<u><b>Category Shortcuts</b></u>
+• Ctrl  + Up / Down   → Change class type
+• Shift + Up / Down   → Move entry up/down in section
+
+
+<u><b>Automatic Highlighting (Viewer Mode)</b></u>
+The following are highlighted automatically:
+• Stats: ATK, HP, COST, DMG
+• Numeric stats: 3/2, +1/+1, 1/1/1
+• Rarities, resources, keywords, and tribes
+
+
+<u><b>Manual Underlining</b></u>
+Use underscores to force underline:
+Magic: Equip _Example_.
+
+
+<u><b>Manual Switch Highlighting</b></u>
+Use double brackets for switch effects:
+Switch: [[Example 1]] or [[Example 2]]
+
+
+<u><b>Manual Card References</b></u>
+Use curly braces to reference cards:
+Magic: Cast {Example}.
+
+
+<u><b>Viewer Mode vs Editor Mode</b></u>
+Editor Mode:
+• Editable, no formatting
+
+Viewer Mode:
+• Read-only
+• Formatting applied
+• Clean display
+
+
+<u><b>Saving & Reset</b></u>
+• Changes save automatically
+• Double-click Reset Data to clear everything
+
+
+Developed by TheWiza2341`,
+        closable: true
+    });
+};
+
 
     document.addEventListener('keydown',e=>{
         if(!custom) return;
