@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         UC Patch Maker
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.2.2
 // @author       TheWiza2341
 // @description  Ever wanted to make custom Undercards fanpatches with ease? Now you can! Featuring save/load functionality, keyword/card implementations, and more!
 // @match        https://undercards.net/*gameUpdates*
@@ -787,7 +787,6 @@ function init(main){
 `<u><b>Basic Editing</b></u>
 Click any balance change to begin editing
 • Enter  = Confirm change
-• Escape = Cancel change
 
 
 <u><b>Adding & Removing Entries</b></u>
