@@ -34,8 +34,8 @@ let hideControlsSetting = null;
 let cardHoverSetting = null;
 let ucPatchControlButtons = [];
 
-const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
-//const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
+//const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
+const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
 //i swear one of these should work
 
 let openPatchNotesSetting = null;
