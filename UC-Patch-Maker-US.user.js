@@ -34,8 +34,9 @@ let hideControlsSetting = null;
 let cardHoverSetting = null;
 let ucPatchControlButtons = [];
 
-//const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js"; may not work
-const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
+const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
+//const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
+//i swear one of these should work
 
 let openPatchNotesSetting = null;
 const UC_PATCH_OPEN_DEFAULT = false;
@@ -1306,7 +1307,7 @@ Viewer Mode:
 • Changes save automatically
 • Double-click Reset Data to clear everything
 
-
+Version: v${PATCH_MAKER_VERSION}
 Developed by TheWiza2341`;
 
     const pageWindow = (typeof unsafeWindow !== 'undefined') ? unsafeWindow : window;
