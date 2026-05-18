@@ -19,7 +19,7 @@
 // UNDERSCRIPT PLUGIN WRAPPER
 // ================================================================
 
-const PATCH_MAKER_VERSION = "0.0.1";
+const PATCH_MAKER_VERSION = "1.5.2";
 const PLUGIN_NAME = "Patch Maker";
 
 
