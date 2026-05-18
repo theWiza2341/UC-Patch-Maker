@@ -700,7 +700,7 @@ html, body {
 #uc-patch-overlay .uc-card-gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 4px;
     align-items: flex-start;
     min-height: 246px;
 }
