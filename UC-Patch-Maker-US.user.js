@@ -12,7 +12,6 @@
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
-// @grant        GM_info
 // ==/UserScript==
 
 (function () {
@@ -25,23 +24,6 @@
 const PATCH_MAKER_VERSION = "1.5.4";
 const PLUGIN_NAME = "Patch Maker";
 
-console.log(
-    `[UC Patch Maker] Running version ${PATCH_MAKER_VERSION}`,
-    {
-        gmInfoVersion:
-            typeof GM_info !== "undefined"
-                ? GM_info.script.version
-                : "GM_info unavailable",
-        scriptName:
-            typeof GM_info !== "undefined"
-                ? GM_info.script.name
-                : "Unknown",
-        updateURL: typeof UC_PATCH_UPDATE_URL !== "undefined"
-            ? UC_PATCH_UPDATE_URL
-            : "Not initialized yet"
-    }
-);
-
 let ucPatchPlugin = null;
 let ucPatchLogger = console;
 let ucPatchStarted = false;
@@ -51,25 +33,12 @@ let hideControlsSetting = null;
 let cardHoverSetting = null;
 let ucPatchControlButtons = [];
 
-//const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
-const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
-//i swear one of these should work
+const UC_PATCH_RAW_URL =
+    "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
 
-console.log(
-    `[UC Patch Maker] Running version ${PATCH_MAKER_VERSION}`,
-    {
-        gmInfoVersion:
-            typeof GM_info !== "undefined"
-                ? GM_info.script.version
-                : "GM_info unavailable",
-        scriptName:
-            typeof GM_info !== "undefined"
-                ? GM_info.script.name
-                : "Unknown",
-        updateURL: UC_PATCH_UPDATE_URL
-    }
-);
-    
+const UC_PATCH_INSTALL_URL =
+    "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
+
 let openPatchNotesSetting = null;
 const UC_PATCH_OPEN_DEFAULT = false;
 const UC_PATCH_OPEN_KEY = "uc_patch_open_on_page";
@@ -485,7 +454,10 @@ function registerUnderScriptPlugin() {
     try {
         ucPatchPlugin = us.plugin(PLUGIN_NAME, PATCH_MAKER_VERSION);
 
-        ucPatchPlugin.updater?.(UC_PATCH_UPDATE_URL);
+        ucPatchPlugin.updater?.({
+           updateURL: UC_PATCH_RAW_URL,
+           downloadURL: UC_PATCH_INSTALL_URL
+       });
 
         ucPatchLogger = getPluginLogger(ucPatchPlugin);
         pluginLog("[UC Patch Maker] Registered as UnderScript plugin.");
