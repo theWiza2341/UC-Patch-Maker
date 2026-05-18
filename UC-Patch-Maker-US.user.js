@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         UC Patch Maker - UnderScript Plugin
 // @namespace    http://tampermonkey.net/
-// @version      1.5.2
+// @version      1.5.3
 // @author       TheWiza2341
 // @description  UnderScript plugin version of UC Patch Maker. Adds custom Undercards fanpatch editing/viewing tools to the game updates page.
 // @match        https://undercards.net/*gameUpdates*
@@ -19,7 +19,7 @@
 // UNDERSCRIPT PLUGIN WRAPPER
 // ================================================================
 
-const PATCH_MAKER_VERSION = "1.5.2";
+const PATCH_MAKER_VERSION = "1.5.3";
 const PLUGIN_NAME = "Patch Maker";
 
 
