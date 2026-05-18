@@ -12,6 +12,7 @@
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
+// @grant        GM_info
 // ==/UserScript==
 
 (function () {
@@ -54,6 +55,21 @@ let ucPatchControlButtons = [];
 const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
 //i swear one of these should work
 
+console.log(
+    `[UC Patch Maker] Running version ${PATCH_MAKER_VERSION}`,
+    {
+        gmInfoVersion:
+            typeof GM_info !== "undefined"
+                ? GM_info.script.version
+                : "GM_info unavailable",
+        scriptName:
+            typeof GM_info !== "undefined"
+                ? GM_info.script.name
+                : "Unknown",
+        updateURL: UC_PATCH_UPDATE_URL
+    }
+);
+    
 let openPatchNotesSetting = null;
 const UC_PATCH_OPEN_DEFAULT = false;
 const UC_PATCH_OPEN_KEY = "uc_patch_open_on_page";
