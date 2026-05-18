@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         UC Patch Maker - UnderScript Plugin
 // @namespace    http://tampermonkey.net/
-// @version      1.5.3
+// @version      1.5.4
 // @author       TheWiza2341
 // @description  UnderScript plugin version of UC Patch Maker. Adds custom Undercards fanpatch editing/viewing tools to the game updates page.
 // @match        https://undercards.net/*gameUpdates*
 // @icon         https://i.imgur.com/qKHDfnB.png
+// @updateURL    https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js
+// @downloadURL  https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js
 // @require      https://raw.githubusercontent.com/UCProjects/UnderScript/master/src/checkerV2.js
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -19,7 +21,7 @@
 // UNDERSCRIPT PLUGIN WRAPPER
 // ================================================================
 
-const PATCH_MAKER_VERSION = "1.5.3";
+const PATCH_MAKER_VERSION = "1.5.4";
 const PLUGIN_NAME = "Patch Maker";
 
 
@@ -32,7 +34,8 @@ let hideControlsSetting = null;
 let cardHoverSetting = null;
 let ucPatchControlButtons = [];
 
-const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
+//const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js"; may not work
+const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/theWiza2341/UC-Patch-Maker/main/UC-Patch-Maker-US.user.js";
 
 let openPatchNotesSetting = null;
 const UC_PATCH_OPEN_DEFAULT = false;
