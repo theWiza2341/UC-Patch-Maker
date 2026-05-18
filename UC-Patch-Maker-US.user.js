@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         UC Patch Maker - UnderScript Plugin
 // @namespace    http://tampermonkey.net/
-// @version      1.5.1
+// @version      1.5.2
 // @author       TheWiza2341
 // @description  UnderScript plugin version of UC Patch Maker. Adds custom Undercards fanpatch editing/viewing tools to the game updates page.
 // @match        https://undercards.net/*gameUpdates*
@@ -32,7 +32,7 @@ let hideControlsSetting = null;
 let cardHoverSetting = null;
 let ucPatchControlButtons = [];
 
-const UC_PATCH_UPDATE_URL = "https://raw.githubusercontent.com/YOUR_NAME/YOUR_REPO/main/UC-Patch-Maker-UnderScript-Plugin.user.js";
+const UC_PATCH_UPDATE_URL = "https://github.com/theWiza2341/UC-Patch-Maker/raw/refs/heads/main/UC-Patch-Maker-US.user.js";
 
 let openPatchNotesSetting = null;
 const UC_PATCH_OPEN_DEFAULT = false;
@@ -55,7 +55,7 @@ const UC_PATCH_LANGUAGE_OPTIONS = [
     "Russian"
 ];
 
-const UC_PATCH_DEBUG_DEFAULT = true;
+const UC_PATCH_DEBUG_DEFAULT = false;
 const UC_PATCH_LOGGING_KEY = "uc_patch_logging_enabled";
 const UC_PATCH_HIDE_CONTROLS_DEFAULT = false;
 const UC_PATCH_HIDE_CONTROLS_KEY = "uc_patch_hide_controls";
@@ -402,8 +402,6 @@ function registerPatchMakerSettings() {
         window.ucPatchMakerToggleControls = togglePatchControlsHidden;
         window.ucPatchMakerControlsHidden = isPatchControlsHidden;
 
-        installPatchSettingsPolisher();
-
         debugLog("Registered Patch Maker UnderScript settings.", {
             debugLoggingValue: debugLoggingSetting && typeof debugLoggingSetting.value === "function"
                 ? debugLoggingSetting.value()
@@ -421,16 +419,6 @@ function registerPatchMakerSettings() {
     }
 }
 
-function installPatchSettingsPolisher() {
-    const observer = new MutationObserver(() => {
-        polishPatchMakerSettingsPanel();
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}
 
 function registerUnderScriptPlugin() {
     const us = getUnderScriptApi();
@@ -843,7 +831,9 @@ const WORD_COLORS = {
 
     "DT":"red",
     "COST":"#00d0ff",
-    "G":"gold"
+    "G":"gold",
+    "КР":"#d535d9", //I'm lazy so this is translated KR
+    "KR":"#d535d9"
 
 };
 
@@ -1049,6 +1039,18 @@ async function rebuildLocalizedUnderlineTokens() {
                 }
             }
         });
+
+        const krText = getLocalizedStringSafely("status-kr");
+
+        if (krText) {
+            const clean = sanitizeText(decodeTranslationHtml(krText));
+
+            if (clean) {
+                LOCALIZED_WORD_COLORS[clean] = WORD_COLORS.KR;
+                LOCALIZED_WORD_COLORS[clean.toUpperCase()] = WORD_COLORS.KR;
+            }
+        }
+
     } catch (e) {
         debugWarn("Failed to rebuild localized underline tokens.", e);
     } finally {
@@ -1247,6 +1249,11 @@ Each entry needs a category:
 • Ctrl  + Up / Down   → Change class type
 • Shift + Up / Down   → Move entry up/down in section
 
+<u><b>New Cards Sections</b></u>
+• Select a image from your computer to be displayed as a new card
+• Recommended to be paired with custom cards created from either of the following sites:
+<a href="https://undercard.feildmaster.com/">Undercards Template Editor - by feildmaster</a>
+<a href="https://uc-editor.vercel.app/">Undercards Card Editor - by Sernon158</a>
 
 <u><b>Custom Balance Sections</b></u>
 • Green + Button – Add a new custom balance section
@@ -1264,7 +1271,7 @@ The following are highlighted automatically:
 
 <u><b>Manually Ignore Formatting</b></u>
 Use backwards slash to skip automatic formatting for words:
-Red \Snail -- \ATK 2 > 1.
+Red \\Snail -- \\ATK 2 > 1.
 
 
 <u><b>Manual Underlining</b></u>
